@@ -18,9 +18,24 @@ class GameRoom extends Room {
     });
   }
 
-  onJoin(client) {
-    this.state.players[client.sessionId] = { x: 0, y: 0, z: 0 };
+  onJoin(client, options) {
+    // Guardar el playerName junto con las coordenadas iniciales
+    this.state.players[client.sessionId] = {
+      x: 0, 
+      y: 0, 
+      z: 0, 
+      playerName: options.playerName  // Guardar el playerName
+    };
+
+    // Emitir mensaje de bienvenida con el playerName
+    this.broadcast("players", this.state.players);
   }
+
+  onLeave(client) {
+    delete this.state.players[client.sessionId];
+    this.broadcast("update", this.state.players);
+  }
+  
 }
 
 const app = express();
