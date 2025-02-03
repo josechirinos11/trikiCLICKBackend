@@ -1,10 +1,10 @@
 import express from "express";
 import { createServer } from "http";
-import pkg from "@colyseus/core"; // Importar el paquete completo de @colyseus/core
-const { WebSocketTransport } = pkg;  // Desestructurar WebSocketTransport del paquete
+import pkg from "@colyseus/core"; // Importar todo desde @colyseus/core
+const { Server } = pkg; // Extraer solo el Server de @colyseus/core
 
-import pkgColyseus from "colyseus"; // Importar colyseus como un módulo default
-const { Server, Room } = pkgColyseus; // Desestructurar Server y Room
+import pkgColyseus from "colyseus";  // Importar colyseus como módulo por defecto
+const { Room } = pkgColyseus; // Extraer Room de Colyseus
 
 class GameRoom extends Room {
   maxClients = 4;
@@ -83,13 +83,15 @@ class GameRoom extends Room {
 const app = express();
 const server = createServer(app);
 
+// Configuración de WebSocketTransport usando la nueva API
 const gameServer = new Server({
-  transport: new WebSocketTransport({
+  transport: {
+    // Asegúrate de pasar las opciones correctas para el transporte
     pingInterval: 10000,
     pingMaxRetries: 3,
     server: server,
     verifyClient: (info) => true
-  })
+  }
 });
 
 gameServer.define("game", GameRoom);
