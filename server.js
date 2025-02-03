@@ -101,4 +101,4 @@ const gameServer = new Server({
 gameServer.define("game", GameRoom);
 
 
-server.listen(2567, () => console.log("Servidor Colyseus CORRIENDO ANDA, VIVA LA LIBERTAD CARAJOOOOOO"));
+server.listen(2567, () => console.log("Servidor Colyseus CORRIENDO ANDA, VIVA LA LIBERTAD "));
