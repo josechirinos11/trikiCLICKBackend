@@ -96,4 +96,7 @@ const gameServer = new Server({
 
 gameServer.define("game", GameRoom);
 
-server.listen(2567, () => console.log("Servidor Colyseus CORRIENDO ANDA, VIVA LA LIBERTAD SIIIIIIIIIIIII"));
+const port = process.env.PORT || 2567;  // Usa el puerto asignado por Render o el puerto 2567 por defecto
+server.listen(port, () => {
+  console.log(`Servidor Colyseus corriendo en el puerto ${port}`);
+});
