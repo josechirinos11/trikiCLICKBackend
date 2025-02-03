@@ -1,9 +1,8 @@
-import { Server } from "colyseus";
-import { createServer } from "http";
 import express from "express";
+import { createServer } from "http";
 import { WebSocketTransport } from "@colyseus/core";
-import pkg from "colyseus"; // Importar Colyseus de esta forma
-const { Room } = pkg;  // Obtener Room del export default
+import pkg from "colyseus";  // Importar colyseus como un módulo default
+const { Server, Room } = pkg;  // Desestructurar Server y Room
 
 class GameRoom extends Room {
   maxClients = 4;
@@ -52,7 +51,7 @@ class GameRoom extends Room {
       client.leave();
       return;
     }
-    
+
     this.state.players[client.sessionId] = {
       x: 0,
       y: 0,
@@ -60,11 +59,11 @@ class GameRoom extends Room {
       playerName: options.playerName || "Guest",
       ready: false
     };
-    
+
     if (!this.state.creator) {
       this.state.creator = client.sessionId;
     }
-    
+
     console.log(`${options.playerName} se unió a la sala.`);
     this.broadcast("players", this.state.players);
   }
@@ -93,4 +92,4 @@ const gameServer = new Server({
 
 gameServer.define("game", GameRoom);
 
-server.listen(2567, () => console.log("Servidor Colyseus CORRIENDO ANDA, VIVA LA LIBERTAD SI O SI "));
+server.listen(2567, () => console.log("Servidor Colyseus CORRIENDO ANDA, VIVA LA LIBERTAD SIIIIIIIIIIIII"));
