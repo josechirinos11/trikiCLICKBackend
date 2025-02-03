@@ -83,7 +83,7 @@ const app = express();
 const server = createServer(app);
 
 // Usar WebSocketTransport correctamente
-import { WebSocketTransport } from "@colyseus/core";
+
 
 const gameServer = new Server({
   transport: new WebSocketTransport({
