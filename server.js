@@ -83,13 +83,20 @@ const app = express();
 const server = createServer(app);
 
 // Usar WebSocketTransport correctamente
+const { WebSocketTransport } = require("@colyseus/core");
+
 const gameServer = new Server({
-  server,
-  transport: {
-    pingInterval: 10000,  // por ejemplo, 10 segundos
-    pingMaxRetries: 3,    // máximo de intentos antes de desconectar
-  }
+  transport: new WebSocketTransport({
+    pingInterval: 10000,     // Intervalo de ping
+    pingMaxRetries: 3,       // Máximo número de intentos de ping
+    server: server,          // El servidor HTTP que usa WebSocket
+    verifyClient: (info) => {  // Lógica de validación del cliente (opcional)
+      // Puedes incluir tu lógica de validación aquí si es necesario
+      return true;
+    }
+  })
 });
+
 
 gameServer.define("game", GameRoom);
 
