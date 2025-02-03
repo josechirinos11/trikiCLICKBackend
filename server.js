@@ -1,7 +1,7 @@
 const { Server } = require("colyseus");
 const { createServer } = require("http");
 const express = require("express");
-const { WebSocketTransport } = require("colyseus");
+const { WebSocketTransport } = require("@colyseus/core");
 
 const { Room } = require("colyseus");
 
@@ -82,16 +82,16 @@ class GameRoom extends Room {
 const app = express();
 const server = createServer(app);
 
-// Usar WebSocketTransport
+// Usar WebSocketTransport correctamente
 const gameServer = new Server({
   server,
-  transport: new WebSocketTransport({
+  transport: {
     pingInterval: 10000,  // por ejemplo, 10 segundos
     pingMaxRetries: 3,    // máximo de intentos antes de desconectar
-    // Puedes agregar más configuraciones si las necesitas, como verifyClient
-  })
+  }
 });
 
 gameServer.define("game", GameRoom);
+
 
 server.listen(2567, () => console.log("Servidor Colyseus CORRIENDO ANDA, VIVA LA LIBERTAD CARAJOOOOOO"));
