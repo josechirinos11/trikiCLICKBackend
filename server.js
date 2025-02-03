@@ -2,8 +2,8 @@ import { Server } from "colyseus";
 import { createServer } from "http";
 import express from "express";
 import { WebSocketTransport } from "@colyseus/core";
-
-import { Room } from "colyseus";
+import pkg from "colyseus"; // Importar Colyseus de esta forma
+const { Room } = pkg;  // Obtener Room del export default
 
 class GameRoom extends Room {
   maxClients = 4;
@@ -82,23 +82,15 @@ class GameRoom extends Room {
 const app = express();
 const server = createServer(app);
 
-// Usar WebSocketTransport correctamente
-
-
 const gameServer = new Server({
   transport: new WebSocketTransport({
-    pingInterval: 10000,     // Intervalo de ping
-    pingMaxRetries: 3,       // Máximo número de intentos de ping
-    server: server,          // El servidor HTTP que usa WebSocket
-    verifyClient: (info) => {  // Lógica de validación del cliente (opcional)
-      // Puedes incluir tu lógica de validación aquí si es necesario
-      return true;
-    }
+    pingInterval: 10000,
+    pingMaxRetries: 3,
+    server: server,
+    verifyClient: (info) => true
   })
 });
 
-
 gameServer.define("game", GameRoom);
 
-
-server.listen(2567, () => console.log("Servidor Colyseus CORRIENDO ANDA, VIVA LA LIBERTAD "));
+server.listen(2567, () => console.log("Servidor Colyseus CORRIENDO ANDA, VIVA LA LIBERTAD SI O SI "));
