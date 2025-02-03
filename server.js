@@ -1,8 +1,10 @@
 import express from "express";
 import { createServer } from "http";
-import { WebSocketTransport } from "@colyseus/core";
-import pkg from "colyseus";  // Importar colyseus como un módulo default
-const { Server, Room } = pkg;  // Desestructurar Server y Room
+import pkg from "@colyseus/core"; // Importar el paquete completo de @colyseus/core
+const { WebSocketTransport } = pkg;  // Desestructurar WebSocketTransport del paquete
+
+import pkgColyseus from "colyseus"; // Importar colyseus como un módulo default
+const { Server, Room } = pkgColyseus; // Desestructurar Server y Room
 
 class GameRoom extends Room {
   maxClients = 4;
