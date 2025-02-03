@@ -7,7 +7,7 @@ class GameRoom extends Room {
   maxClients = 4;
 
   onCreate() {
-    this.setState({ players: {} });
+    this.setState({ players: {}, creator: null });
     console.log("Sala creada con éxito");
 
     this.onMessage("move", (client, data) => {
@@ -20,7 +20,7 @@ class GameRoom extends Room {
     });
 
     this.onMessage("message", (client, message) => {
-      this.broadcast("chat", { sender: client.sessionId, text: message });
+      this.broadcast("chat", { sender: client.sessionId, text: message.text });
     });
 
     this.onMessage("player_ready", (client, data) => {
@@ -32,9 +32,11 @@ class GameRoom extends Room {
     });
 
     this.onMessage("start_game", (client) => {
-      const allReady = Object.values(this.state.players).every(player => player.ready);
-      if (allReady) {
-        this.broadcast("start_game");
+      if (client.sessionId === this.state.creator) {
+        const allReady = Object.values(this.state.players).every(player => player.ready);
+        if (allReady) {
+          this.broadcast("start_game");
+        }
       }
     });
 
@@ -56,12 +58,20 @@ class GameRoom extends Room {
       playerName: options.playerName || "Guest",
       ready: false
     };
+    
+    if (!this.state.creator) {
+      this.state.creator = client.sessionId;
+    }
+    
     console.log(`${options.playerName} se unió a la sala.`);
     this.broadcast("players", this.state.players);
   }
 
   onLeave(client) {
     delete this.state.players[client.sessionId];
+    if (this.state.creator === client.sessionId) {
+      this.state.creator = Object.keys(this.state.players)[0] || null;
+    }
     this.broadcast("update", this.state.players);
     console.log(`Jugador ${client.sessionId} salió de la sala.`);
   }
