@@ -1,9 +1,9 @@
-const { Server } = require("colyseus");
-const { createServer } = require("http");
-const express = require("express");
-const { WebSocketTransport } = require("@colyseus/core");
+import { Server } from "colyseus";
+import { createServer } from "http";
+import express from "express";
+import { WebSocketTransport } from "@colyseus/core";
 
-const { Room } = require("colyseus");
+import { Room } from "colyseus";
 
 class GameRoom extends Room {
   maxClients = 4;
@@ -83,7 +83,7 @@ const app = express();
 const server = createServer(app);
 
 // Usar WebSocketTransport correctamente
-const { WebSocketTransport } = require("@colyseus/core");
+import { WebSocketTransport } from "@colyseus/core";
 
 const gameServer = new Server({
   transport: new WebSocketTransport({
